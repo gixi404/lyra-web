@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import oneImg from "../assets/lyra-one-img.webp";
 import twoImg from "../assets/lyra-two-img.webp";
 import threeImg from "../assets/lyra-three-img.webp";
@@ -27,6 +27,14 @@ const views = [
 function Hero() {
   const [activeTab, setActiveTab] = useState(views[0].id);
   const currentView = views.find((v) => v.id === activeTab) || views[0];
+
+  // Precarga inmediata de todas las imágenes para que no haya tiempo de espera
+  useEffect(() => {
+    views.forEach((view) => {
+      const img = new Image();
+      img.src = view.img;
+    });
+  }, []);
 
   return (
     <section className="hero-section">
@@ -102,13 +110,18 @@ function Hero() {
               </div>
             </div>
 
+            {/* Contenedor con alto fijo y todas las imágenes precargadas en el DOM */}
             <div className="mockup-image-container">
-              <img
-                src={currentView.img}
-                alt={`Captura de pantalla de Lyra - ${currentView.label}`}
-                className="mockup-image"
-                loading="eager"
-              />
+              {views.map((view) => (
+                <img
+                  key={view.id}
+                  src={view.img}
+                  alt={`Captura de pantalla de Lyra - ${view.label}`}
+                  className={`mockup-image ${activeTab === view.id ? "active" : ""}`}
+                  loading="eager"
+                  decoding="async"
+                />
+              ))}
             </div>
 
             <div className="mockup-caption">
