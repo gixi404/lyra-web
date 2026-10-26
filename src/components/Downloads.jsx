@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const downloadOptions = [
+const INITIAL_DOWNLOAD_OPTIONS = [
   {
     platformId: "linux",
     platformName: "Linux",
@@ -25,17 +25,17 @@ const downloadOptions = [
       {
         name: "Debian / Ubuntu / Mint",
         format: ".deb",
-        url: "https://github.com/gixi404/lyra/releases/download/v2.0.9/Lyra_2.0.9_amd64.deb",
+        url: "https://github.com/gixi404/lyra/releases/download/v2.0.12/Lyra_2.0.12_amd64.deb",
       },
       {
         name: "Fedora / openSUSE / RHEL",
         format: ".rpm",
-        url: "https://github.com/gixi404/lyra/releases/download/v2.0.9/Lyra-2.0.9-1.x86_64.rpm",
+        url: "https://github.com/gixi404/lyra/releases/download/v2.0.12/Lyra-2.0.12-1.x86_64.rpm",
       },
       {
         name: "Paquete universal portátil",
         format: ".AppImage",
-        url: "https://github.com/gixi404/lyra/releases/download/v2.0.9/Lyra_2.0.9_amd64.AppImage",
+        url: "https://github.com/gixi404/lyra/releases/download/v2.0.12/Lyra_2.0.12_amd64.AppImage",
       },
     ],
   },
@@ -64,12 +64,12 @@ const downloadOptions = [
       {
         name: "Instalador MSI",
         format: ".msi",
-        url: "https://github.com/gixi404/lyra/releases/download/v2.0.9/Lyra_2.0.9_x64_es-ES.msi",
+        url: "https://github.com/gixi404/lyra/releases/download/v2.0.12/Lyra_2.0.12_x64_es-ES.msi",
       },
       {
         name: "Instalador autónomo EXE",
         format: ".exe",
-        url: "https://github.com/gixi404/lyra/releases/download/v2.0.9/Lyra_2.0.9_x64-setup.exe",
+        url: "https://github.com/gixi404/lyra/releases/download/v2.0.12/Lyra_2.0.12_x64-setup.exe",
       },
     ],
   },
@@ -96,15 +96,17 @@ const downloadOptions = [
       {
         name: "Paquete universal DMG",
         format: ".dmg",
-        url: "https://github.com/gixi404/lyra/releases/download/v2.0.7/Lyra_2.0.7_universal.dmg",
+        url: "https://github.com/gixi404/lyra/releases/download/v2.0.12/Lyra_2.0.12_universal.dmg",
       },
     ],
   },
 ];
 
 function Downloads() {
+  const [downloadOptions, setDownloadOptions] = useState(INITIAL_DOWNLOAD_OPTIONS);
   const [detectedOS, setDetectedOS] = useState(null);
 
+  // Detección del sistema operativo del visitante
   useEffect(() => {
     if (typeof window === "undefined") return;
     const ua = window.navigator.userAgent.toLowerCase();
@@ -115,6 +117,87 @@ function Downloads() {
     } else if (ua.includes("mac")) {
       setDetectedOS("macos");
     }
+  }, []);
+
+  // Obtención dinámica y automática de la última versión subida a GitHub Releases
+  useEffect(() => {
+    const fetchLatestReleases = async () => {
+      try {
+        const cacheKey = "lyra_latest_release";
+        let releaseData = null;
+
+        // Caché de sesión para evitar peticiones repetitivas al navegar
+        const cached = sessionStorage.getItem(cacheKey);
+        if (cached) {
+          try {
+            releaseData = JSON.parse(cached);
+          } catch {
+            releaseData = null;
+          }
+        }
+
+        if (!releaseData) {
+          const res = await fetch("https://api.github.com/repos/gixi404/lyra/releases/latest");
+          if (res.ok) {
+            releaseData = await res.json();
+            sessionStorage.setItem(cacheKey, JSON.stringify(releaseData));
+          }
+        }
+
+        if (!releaseData || !Array.isArray(releaseData.assets)) return;
+
+        const assets = releaseData.assets.filter(
+          (a) => !a.name.endsWith(".sig") && !a.name.endsWith(".json")
+        );
+
+        const debUrl = assets.find((a) => a.name.endsWith(".deb"))?.browser_download_url;
+        const rpmUrl = assets.find((a) => a.name.endsWith(".rpm"))?.browser_download_url;
+        const appImageUrl = assets.find((a) => a.name.endsWith(".AppImage"))?.browser_download_url;
+        const msiUrl = assets.find((a) => a.name.endsWith(".msi"))?.browser_download_url;
+        const exeUrl = assets.find((a) => a.name.endsWith(".exe") || a.name.endsWith("-setup.exe"))?.browser_download_url;
+        const dmgUrl = assets.find((a) => a.name.endsWith(".dmg"))?.browser_download_url;
+
+        setDownloadOptions((prev) =>
+          prev.map((platform) => {
+            if (platform.platformId === "linux") {
+              return {
+                ...platform,
+                files: platform.files.map((file) => {
+                  if (file.format === ".deb" && debUrl) return { ...file, url: debUrl };
+                  if (file.format === ".rpm" && rpmUrl) return { ...file, url: rpmUrl };
+                  if (file.format === ".AppImage" && appImageUrl) return { ...file, url: appImageUrl };
+                  return file;
+                }),
+              };
+            }
+            if (platform.platformId === "windows") {
+              return {
+                ...platform,
+                files: platform.files.map((file) => {
+                  if (file.format === ".msi" && msiUrl) return { ...file, url: msiUrl };
+                  if (file.format === ".exe" && exeUrl) return { ...file, url: exeUrl };
+                  return file;
+                }),
+              };
+            }
+            if (platform.platformId === "macos") {
+              return {
+                ...platform,
+                files: platform.files.map((file) => {
+                  if (file.format === ".dmg" && dmgUrl) return { ...file, url: dmgUrl };
+                  return file;
+                }),
+              };
+            }
+            return platform;
+          })
+        );
+      } catch {
+        // En caso de estar sin conexión o fallo de red, se mantienen las URLs de reserva
+      }
+    };
+
+    fetchLatestReleases();
   }, []);
 
   return (
