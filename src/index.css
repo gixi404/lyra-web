@@ -594,22 +594,6 @@ button {
   transition: border-color var(--transition-fast);
 }
 
-.download-card.highlight {
-  border-color: var(--accent);
-}
-
-.detected-badge {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: var(--accent);
-  background-color: var(--badge-bg);
-  border: 1px solid var(--badge-border);
-  padding: 2px 8px;
-  border-radius: 9999px;
-}
 
 .platform-header {
   display: flex;
@@ -955,11 +939,6 @@ button {
     padding: 1.4rem 1.15rem;
   }
 
-  .detected-badge {
-    top: 12px;
-    right: 12px;
-    font-size: 0.68rem;
-  }
 
   .section-title {
     font-size: 1.55rem;

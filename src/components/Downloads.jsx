@@ -81,15 +81,10 @@ const INITIAL_DOWNLOAD_OPTIONS = [
       <svg
         className="platform-icon"
         viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.75"
-        strokeLinecap="round"
-        strokeLinejoin="round"
+        fill="currentColor"
         aria-hidden="true"
       >
-        <path d="M12 20.94c1.5 0 2.75-.74 4-2.14 1.25-1.4 2.25-2.8 3-4.2-.8-.4-1.5-1-2.1-1.8-.6-.8-.9-1.7-.9-2.7 0-1.2.4-2.2 1.2-3.1.8-.9 1.8-1.4 3-1.6-.7-1.3-1.6-2.3-2.8-3-1.2-.7-2.5-1.1-4-1.1-1.3 0-2.4.3-3.3.9-.9.6-1.7 1.1-2.4 1.1-.7 0-1.5-.5-2.4-1.1-.9-.6-2-.9-3.3-.9-1.5 0-2.8.4-4 1.1-1.2.7-2.1 1.7-2.8 3 1.2.2 2.2.7 3 1.6.8.9 1.2 1.9 1.2 3.1 0 1-.3 1.9-.9 2.7-.6.8-1.3 1.4-2.1 1.8.75 1.4 1.75 2.8 3 4.2 1.25 1.4 2.5 2.14 4 2.14.7 0 1.5-.5 2.4-1.1.9-.6 2-.9 3.3-.9 1.3 0 2.4.3 3.3.9.9.6 1.7 1.1 2.4 1.1z" />
-        <path d="M12 2c.6 1.1.4 2.4-.4 3.4-.8 1-2.1 1.6-3.3 1.4-.4-1.2-.1-2.5.7-3.4.8-1 2.1-1.6 3-1.4z" />
+        <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 4.95c.61-.75 1.04-1.8 1.01-2.95-.9.04-2 .6-2.65 1.34-.56.63-1.07 1.67-.92 2.76.99.08 2-.45 2.56-1.15z" />
       </svg>
     ),
     files: [
@@ -104,20 +99,6 @@ const INITIAL_DOWNLOAD_OPTIONS = [
 
 function Downloads() {
   const [downloadOptions, setDownloadOptions] = useState(INITIAL_DOWNLOAD_OPTIONS);
-  const [detectedOS, setDetectedOS] = useState(null);
-
-  // Detección del sistema operativo del visitante
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const ua = window.navigator.userAgent.toLowerCase();
-    if (ua.includes("linux")) {
-      setDetectedOS("linux");
-    } else if (ua.includes("win")) {
-      setDetectedOS("windows");
-    } else if (ua.includes("mac")) {
-      setDetectedOS("macos");
-    }
-  }, []);
 
   // Obtención dinámica y automática de la última versión subida a GitHub Releases
   useEffect(() => {
@@ -213,40 +194,30 @@ function Downloads() {
         </div>
 
         <div className="downloads-grid">
-          {downloadOptions.map((opt) => {
-            const isDetected = detectedOS === opt.platformId;
-            return (
-              <div
-                key={opt.platformId}
-                className={`download-card ${isDetected ? "highlight" : ""}`}
-              >
-                {isDetected && (
-                  <span className="detected-badge">Detectado</span>
-                )}
-
-                <div className="platform-header">
-                  {opt.icon}
-                  <h3 className="platform-name">{opt.platformName}</h3>
-                </div>
-
-                <p className="platform-note">{opt.note}</p>
-
-                <div className="download-links-list">
-                  {opt.files.map((file, idx) => (
-                    <a
-                      key={idx}
-                      href={file.url}
-                      className="download-btn"
-                      download
-                    >
-                      <span>{file.name}</span>
-                      <span className="download-format">{file.format}</span>
-                    </a>
-                  ))}
-                </div>
+          {downloadOptions.map((opt) => (
+            <div key={opt.platformId} className="download-card">
+              <div className="platform-header">
+                {opt.icon}
+                <h3 className="platform-name">{opt.platformName}</h3>
               </div>
-            );
-          })}
+
+              <p className="platform-note">{opt.note}</p>
+
+              <div className="download-links-list">
+                {opt.files.map((file, idx) => (
+                  <a
+                    key={idx}
+                    href={file.url}
+                    className="download-btn"
+                    download
+                  >
+                    <span>{file.name}</span>
+                    <span className="download-format">{file.format}</span>
+                  </a>
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
 
         {/* Nota de verificación y seguridad editorial y sobria */}
