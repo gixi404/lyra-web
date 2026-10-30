@@ -1,0 +1,334 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Política de Privacidad ~ Lyra"
+  description="Política de Privacidad de Lyra. Editor zen, local-first y de código abierto. Cero telemetría y sincronización opcional y transparente con Google Drive."
+  ogUrl="https://lyralyra.vercel.app/privacy"
+>
+  <div class="legal-page">
+    <div class="legal-container">
+      <a href="/" class="legal-back-link">
+        ← Volver al inicio
+      </a>
+
+      <header class="legal-header">
+        <h1 class="legal-title">Política de Privacidad</h1>
+        <p class="legal-updated">Última actualización: 29 de octubre de 2026</p>
+      </header>
+
+      <div class="legal-content">
+        <p class="legal-intro">
+          Esta Política de Privacidad describe de manera transparente cómo <strong>Lyra</strong>{" "}
+          trata la información personal y los datos del usuario. Lyra es una herramienta de
+          escritura y edición de notas de escritorio orientada a la privacidad, basada en el
+          principio de almacenamiento local prioritario (<em>local-first</em>).
+        </p>
+
+        <h2>1. Responsable del Tratamiento y Contacto</h2>
+        <p>
+          El responsable del desarrollo y mantenimiento del proyecto de software de código abierto{" "}
+          <strong>Lyra</strong> es:
+        </p>
+        <ul>
+          <li><strong>Titular:</strong> gixi (desarrollador independiente).</li>
+          <li><strong>Ubicación:</strong> Mendoza, República Argentina.</li>
+          <li><strong>Correo electrónico de contacto y soporte:</strong>{" "}
+            <a href="mailto:gixi.tsx@gmail.com">gixi.tsx@gmail.com</a>
+          </li>
+          <li><strong>Sitio web oficial:</strong>{" "}
+            <a href="https://lyralyra.vercel.app">https://lyralyra.vercel.app</a>
+          </li>
+          <li><strong>Repositorio del código fuente:</strong>{" "}
+            <a href="https://github.com/gixi404/lyra" target="_blank" rel="noopener noreferrer">
+              https://github.com/gixi404/lyra
+            </a>
+          </li>
+        </ul>
+
+        <h2>2. Principio Local-First e Información que Recopila Lyra</h2>
+        <p>
+          Lyra ha sido diseñado para funcionar de forma completamente autónoma en tu equipo:
+        </p>
+        <ul>
+          <li>
+            <strong>Notas y documentos:</strong> Todos los textos y archivos creados o editados en
+            Lyra se almacenan única y exclusivamente en el disco local de tu dispositivo,
+            dentro de la carpeta del usuario (por defecto en <code>~/Documents/lyra/</code> o su
+            equivalente del sistema operativo).
+          </li>
+          <li>
+            <strong>Sin servidores propios ni telemetría:</strong> Lyra no cuenta con servidores
+            propios de backend, no utiliza bases de datos centralizadas, no recopila estadísticas
+            de uso, no incluye herramientas de analítica (como Google Analytics) ni emplea cookies
+            ni rastreadores de publicidad.
+          </li>
+          <li>
+            <strong>Uso sin conexión:</strong> Puedes utilizar Lyra de manera 100% desconectada
+            sin registrarte ni crear cuentas de ningún tipo.
+          </li>
+        </ul>
+
+        <h2>3. Información Obtenida Mediante Google OAuth</h2>
+        <p>
+          Lyra ofrece una función <strong>opcional</strong> de sincronización con Google Drive
+          para que puedas mantener una copia de respaldo en la nube y acceder a tus notas desde
+          múltiples equipos. La conexión con Google Drive solo se inicia cuando el usuario hace clic
+          explícitamente en el botón de conexión dentro de las Preferencias de la aplicación.
+        </p>
+        <p>
+          Durante el inicio de sesión seguro con Google (mediante el estándar OAuth 2.0 PKCE en el
+          navegador web del usuario), Lyra solicita únicamente los siguientes datos:
+        </p>
+        <ul>
+          <li>
+            <strong>Identificación de perfil básico (<code>userinfo.email</code>, <code>userinfo.profile</code>):</strong>{" "}
+            Dirección de correo electrónico, nombre público de la cuenta y enlace a la imagen de perfil.
+            Esta información se utiliza <em>exclusivamente</em> dentro de la interfaz gráfica de Lyra
+            para indicar al usuario qué cuenta se encuentra vinculada en su equipo local.
+          </li>
+          <li>
+            <strong>Tokens de acceso y actualización (OAuth Tokens):</strong> Un token de acceso temporal
+            y un token de actualización emitidos por Google para autorizar peticiones directas a la API
+            de Google Drive sin requerir que introduzcas tu contraseña.
+          </li>
+        </ul>
+
+        <h2>4. Alcance y Uso del Permiso <code>drive.file</code></h2>
+        <p>
+          La aplicación solicita de manera estricta el permiso:
+        </p>
+        <p>
+          <code>https://www.googleapis.com/auth/drive.file</code>
+        </p>
+        <p>
+          <strong>¿Qué significa este permiso?</strong> A diferencia del acceso completo a Google Drive,
+          el permiso <code>drive.file</code> es un ámbito sensible y granular que concede acceso{" "}
+          <strong>únicamente a los archivos y carpetas que han sido creados por Lyra o autorizados
+          específicamente para la aplicación</strong>.
+        </p>
+        <ul>
+          <li>
+            Lyra <strong>NO tiene acceso</strong> al resto de tus archivos, carpetas, hojas de cálculo,
+            fotos o documentos personales existentes en tu Google Drive.
+          </li>
+          <li>
+            Lyra no puede ver, listar, modificar ni eliminar archivos ajenos a las notas creadas y
+            gestionadas dentro de su propia carpeta de trabajo.
+          </li>
+        </ul>
+
+        <h2>5. Cómo Funciona la Sincronización de Notas</h2>
+        <p>
+          El motor de sincronización de Lyra opera siguiendo estas pautas verificables en el código fuente:
+        </p>
+        <ol>
+          <li>
+            <strong>Organización en Google Drive:</strong> Lyra localiza o crea en tu unidad de Google Drive
+            una carpeta dedicada denominada <code>lyra</code> para almacenar tus notas.
+          </li>
+          <li>
+            <strong>Subida de notas:</strong> Cuando creas o editas una nota localmente, Lyra transmite
+            el archivo de texto plano (formato <code>.md</code> o <code>.txt</code>) directamente a la
+            carpeta <code>lyra</code> en Google Drive mediante peticiones HTTPS oficiales a la API de Google.
+          </li>
+          <li>
+            <strong>Descarga de notas:</strong> Al sincronizar en otro equipo, Lyra descarga los archivos
+            presentes en la carpeta <code>lyra</code> de Google Drive hacia tu carpeta local{" "}
+            <code>~/Documents/lyra/</code>.
+          </li>
+          <li>
+            <strong>Detección de cambios y resolución de conflictos:</strong> Se emplean marcas temporales
+            (<code>modifiedTime</code>) y sumas de verificación MD5 (<code>md5Checksum</code>) para cotejar
+            versiones. Si un archivo fue editado simultáneamente en local y en remoto, Lyra crea una copia
+            adicional identificada como conflicto (por ejemplo, <code>nota (conflicto 2026-10-29).md</code>),
+            evitando la pérdida de información sin sobrescribir destructivamente tus notas.
+          </li>
+          <li>
+            <strong>Eliminación protegida:</strong> Cuando eliminas una nota en Lyra, la aplicación envía
+            el archivo a la papelera de Google Drive (<code>trashed: true</code>), permitiendo su eventual
+            recuperación en caso de borrado accidental.
+          </li>
+        </ol>
+
+        <h2>6. Almacenamiento Local de Credenciales, Tokens y Metadatos</h2>
+        <p>
+          La seguridad de tus credenciales reside en tu propio dispositivo:
+        </p>
+        <ul>
+          <li>
+            <strong>Ubicación de los tokens OAuth:</strong> Los tokens de autenticación se guardan
+            localmente en el directorio privado de configuración de la aplicación del sistema operativo:
+            <ul>
+              <li><strong>Linux:</strong> <code>~/.config/com.lyra.dev/gdrive_token.json</code> (con permisos restrictivos POSIX <code>0600</code>, accesibles únicamente por tu usuario).</li>
+              <li><strong>Windows:</strong> <code>%APPDATA%\com.lyra.dev\gdrive_token.json</code>.</li>
+              <li><strong>macOS:</strong> <code>~/Library/Application Support/com.lyra.dev/gdrive_token.json</code>.</li>
+            </ul>
+          </li>
+          <li>
+            <strong>Manifiesto de sincronización:</strong> Los identificadores de archivo remotos y sumas
+            MD5 se guardan en el archivo local <code>~/Documents/lyra/.gdrive_manifest.json</code>.
+          </li>
+          <li>
+            <strong>Registro de eventos (Log):</strong> Los registros locales de depuración se almacenan
+            en <code>~/Documents/lyra/.gdrive_sync.log</code>.
+          </li>
+          <li>
+            <strong>Sin intermediarios:</strong> Las credenciales y los contenidos de las notas{" "}
+            <strong>nunca</strong> se transmiten a servidores de Lyra ni a ningún tercero ajeno a
+            Google LLC. Toda conexión ocurre de forma directa entre tu ordenador y las APIs oficiales de Google.
+          </li>
+        </ul>
+
+        <h2>7. Medidas de Seguridad Técnicas</h2>
+        <p>
+          Lyra implementa medidas técnicas de seguridad basadas en estándares abiertos:
+        </p>
+        <ul>
+          <li>
+            <strong>OAuth 2.0 con PKCE (RFC 7636):</strong> El inicio de sesión utiliza PKCE con
+            desafío criptográfico SHA-256 (<code>S256</code>) y un verificador aleatorio de 32 bytes,
+            protegiendo el flujo contra ataques de interceptación del código de autorización en clientes públicos nativos.
+          </li>
+          <li>
+            <strong>Protección contra ataques CSRF:</strong> El flujo de retorno valida de forma estricta
+            un parámetro <code>state</code> aleatorio e impredecible.
+          </li>
+          <li>
+            <strong>Servidor loopback efímero:</strong> El servidor local que recibe la respuesta de Google
+            solo escucha peticiones en <code>localhost</code>, cuenta con un tiempo límite de expiración de
+            180 segundos y se cierra inmediatamente al concluir o cancelar la autenticación.
+          </li>
+          <li>
+            <strong>Cifrado en tránsito:</strong> Todas las comunicaciones con Google Drive se realizan bajo
+            canales cifrados seguros HTTPS / TLS 1.3.
+          </li>
+        </ul>
+
+        <h2>8. Compartición de Datos con Terceros</h2>
+        <p>
+          <strong>Lyra no vende, no alquila, no comparte, no transfiere ni comercializa datos personales,
+          notas ni tokens de usuario con terceros</strong>, incluyendo anunciantes, intermediarios de datos
+          o plataformas de publicidad.
+        </p>
+        <p>
+          El único intercambio de información se produce de forma directa entre tu dispositivo y los
+          servidores de Google LLC, con el único propósito de hacer efectiva la sincronización de archivos
+          que tú hayas configurado voluntariamente.
+        </p>
+
+        <h2>9. Cómo Desconectar Google Drive y Revocar Permisos</h2>
+        <p>
+          Mantienes el control absoluto sobre tu cuenta y puedes desconectarla en cualquier instante:
+        </p>
+        <ul>
+          <li>
+            <strong>Desde Lyra:</strong> Dirígete a la sección <em>Preferencias</em> y haz clic en{" "}
+            <strong>Desconectar</strong>. Lyra llamará de forma automática al punto de revocación oficial
+            de Google (<code>https://oauth2.googleapis.com/revoke</code>), eliminará el archivo de tokens
+            local (<code>gdrive_token.json</code>) y borrará el estado de sesión en memoria.
+          </li>
+          <li>
+            <strong>Desde tu Cuenta de Google:</strong> Puedes revocar el acceso concedido a Lyra en
+            cualquier momento visitando el panel de seguridad de Google:{" "}
+            <a
+              href="https://myaccount.google.com/permissions"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              https://myaccount.google.com/permissions
+            </a>.
+          </li>
+          <li>
+            <strong>Conservación de notas tras la desconexión:</strong> Al desconectar tu cuenta, tus notas
+            locales permanecen intactas en tu ordenador y las copias previamente subidas permanecen en tu Google Drive.
+            Ningún archivo es eliminado como resultado de cerrar sesión.
+          </li>
+        </ul>
+
+        <h2>10. Conservación y Eliminación de Datos</h2>
+        <p>
+          Dado que Lyra no almacena datos en servidores propios, el ciclo de vida de tu información depende
+          exclusivamente de ti:
+        </p>
+        <ul>
+          <li>
+            <strong>Eliminación de notas:</strong> Puedes eliminar cualquier nota local borrándola desde la
+            aplicación o directamente desde el explorador de archivos de tu sistema operativo.
+          </li>
+          <li>
+            <strong>Eliminación de datos remotos:</strong> Puedes gestionar o eliminar tus notas sincronizadas
+            ingresando directamente a tu cuenta de Google Drive en la carpeta <code>lyra</code> o en la papelera de Drive.
+          </li>
+          <li>
+            <strong>Eliminación de tokens:</strong> Al desconectar la cuenta desde Preferencias o al desinstalar
+            la aplicación junto con sus archivos de configuración, los tokens OAuth se eliminan de forma definitiva.
+          </li>
+        </ul>
+
+        <h2>11. Derechos del Usuario</h2>
+        <p>
+          De conformidad con las normativas de protección de datos aplicables, tienes derecho a acceder,
+          rectificar, descargar, limitar y suprimir tus datos personales. Debido a la arquitectura local de Lyra,
+          ejerces estos derechos de forma autónoma y directa sobre tus propios archivos y tu cuenta de Google.
+          Para cualquier duda respecto al tratamiento de tus datos, puedes escribir a{" "}
+          <a href="mailto:gixi.tsx@gmail.com">gixi.tsx@gmail.com</a>.
+        </p>
+
+        <h2>12. Declaración de Cumplimiento de la Política de Datos de Google y Uso Limitado (Limited Use)</h2>
+        <p>
+          <strong>Declaración obligatoria de Uso Limitado:</strong> El uso y la transferencia que hace Lyra
+          a cualquier otra aplicación de la información recibida a través de las APIs de Google cumplirán con la{" "}
+          <a
+            href="https://developers.google.com/terms/api-services-user-data-policy"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Google API Services User Data Policy
+          </a>
+          , incluidos los requisitos de{" "}
+          <a
+            href="https://developers.google.com/terms/api-services-user-data-policy#additional_requirements_for_specific_api_scopes"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Uso Limitado (Limited Use)
+          </a>.
+        </p>
+        <p>
+          En particular:
+        </p>
+        <ul>
+          <li>
+            Lyra utiliza los datos de Google Drive exclusivamente para proveer la funcionalidad visible de sincronización
+            y respaldo de notas solicitada por el usuario.
+          </li>
+          <li>
+            Lyra <strong>NO transfiere</strong> estos datos a terceros, salvo que sea necesario para cumplir con la ley o
+            como parte de una transacción societaria con consentimiento del usuario.
+          </li>
+          <li>
+            Lyra <strong>NO utiliza</strong> los datos de Google para mostrar anuncios publicitarios, crear perfiles de
+            usuario ni revenderlos a intermediarios.
+          </li>
+          <li>
+            Lyra <strong>NO utiliza</strong> los datos obtenidos a través de las APIs de Google para entrenar, enriquecer ni
+            ajustar modelos de inteligencia artificial (IA), modelos de lenguaje general (LLM) o algoritmos de aprendizaje automático (Machine Learning).
+          </li>
+          <li>
+            Ninguna persona humana tiene acceso ni lee las notas del usuario sincronizadas a través de Google Drive, salvo
+            que el propio usuario lo solicite expresamente para soporte técnico o por exigencia legal válida.
+          </li>
+        </ul>
+
+        <h2>13. Modificaciones a esta Política</h2>
+        <p>
+          Podemos actualizar esta Política de Privacidad periódicamente para reflejar mejoras en la aplicación,
+          nuevos requerimientos normativos o directrices de Google. Cualquier cambio sustancial será publicado en esta
+          página con la fecha de revisión actualizada. Te sugerimos revisarla de forma periódica.
+        </p>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

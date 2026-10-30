@@ -12,5 +12,6 @@ thumb
 sketch
 dist
 build
+.astro
 vite.config.ts.map
 vite.config.ts.hot-update

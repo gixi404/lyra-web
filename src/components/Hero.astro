@@ -1,0 +1,343 @@
+---
+import { Image } from "astro:assets";
+import oneImg from "../assets/lyra-one-img.webp";
+import twoImg from "../assets/lyra-two-img.webp";
+import threeImg from "../assets/lyra-three-img.webp";
+
+const views = [
+  {
+    id: "list",
+    label: "Lista",
+    img: oneImg,
+    caption: "Organización rápida de tus notas.",
+  },
+  {
+    id: "focus",
+    label: "Modo Enfoque",
+    img: twoImg,
+    caption: "Solo texto. La interfaz se oculta al escribir.",
+  },
+  {
+    id: "settings",
+    label: "Preferencias",
+    img: threeImg,
+    caption: "Configuración y sincronización opcional.",
+  },
+];
+---
+
+<section class="hero-section w-full text-center">
+  <div class="container">
+    <div class="hero-content mx-auto flex flex-col items-center">
+      <div class="hero-pill inline-flex items-center gap-2 rounded-full border border-[var(--badge-border)] bg-[var(--badge-bg)] text-[var(--text-primary)] font-semibold">
+        <span class="hero-pill-dot shrink-0 rounded-full bg-[var(--accent)]" aria-hidden="true"></span>
+        <span>Lyra · Software libre y local</span>
+      </div>
+
+      <h1 class="hero-title font-bold tracking-tight text-[var(--text-primary)]">
+        Espacio de escritura sin distracciones
+      </h1>
+
+      <p class="hero-subtitle text-[var(--text-primary)]">
+        Editor de notas minimalista. Sin telemetría ni cuentas.
+      </p>
+
+      <div class="hero-actions flex flex-col items-center gap-3.5 w-full">
+        <a href="#descargas" class="btn-primary inline-flex items-center justify-center gap-2.5 bg-[var(--accent)] text-white font-bold cursor-pointer tracking-tight hover:bg-[var(--accent-hover)] active:scale-95 active:bg-[var(--accent-active)] transition-all">
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          <span>Descargar Lyra</span>
+        </a>
+        <span class="hero-meta text-[0.88rem] font-medium text-[var(--text-primary)]">
+          Gratuito y de código abierto · Linux, Windows, macOS
+        </span>
+      </div>
+    </div>
+
+    {/* Marco de vista previa con borde sutil de 1px sin sombras pesadas */}
+    <div class="mockup-wrapper mx-auto w-full max-w-[960px]">
+      <div class="mockup-frame overflow-hidden rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-secondary)] transition-colors">
+        <div class="mockup-topbar flex items-center justify-between border-b border-[var(--border-subtle)] bg-[var(--window-bar)]">
+          <div class="mockup-topbar-left flex items-center min-w-0 overflow-hidden">
+            <div class="mockup-dots flex shrink-0 items-center" aria-hidden="true">
+              <span class="mockup-dot rounded-full bg-[var(--window-dot)]"></span>
+              <span class="mockup-dot rounded-full bg-[var(--window-dot)]"></span>
+              <span class="mockup-dot rounded-full bg-[var(--window-dot)]"></span>
+            </div>
+            <span class="mockup-title truncate font-medium text-[var(--text-primary)]">
+              ~/Documents/lyra/pensamiento-claro.md
+            </span>
+          </div>
+
+          <div class="mockup-tab-group flex shrink-0 items-center" role="tablist" aria-label="Vistas de Lyra">
+            {views.map((tab, idx) => (
+              <button
+                type="button"
+                role="tab"
+                data-tab-id={tab.id}
+                data-caption={tab.caption}
+                aria-selected={idx === 0 ? "true" : "false"}
+                class={`mockup-tab-btn rounded-md border text-[var(--text-primary)] whitespace-nowrap font-medium transition-colors ${idx === 0 ? "active" : ""}`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Contenedor con alto fijo e imágenes en el DOM */}
+        <div class="mockup-image-container relative w-full overflow-hidden bg-[var(--bg-secondary)]">
+          {views.map((view, idx) => (
+            <Image
+              src={view.img}
+              alt={`Captura de pantalla de Lyra - ${view.label}`}
+              data-view-id={view.id}
+              class={`mockup-image absolute inset-0 h-full w-full object-cover object-top transition-all duration-150 ${idx === 0 ? "active" : ""}`}
+              loading="eager"
+              fetchpriority={idx === 0 ? "high" : "low"}
+              decoding="async"
+            />
+          ))}
+        </div>
+
+        <div class="mockup-caption flex items-center justify-between border-t border-[var(--border-subtle)] bg-[var(--bg-secondary)] font-medium text-[var(--text-primary)]">
+          <span id="mockup-caption-text">{views[0].caption}</span>
+          <span class="shrink-0">100% sin conexión</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero-section {
+    padding-top: 5rem;
+    padding-bottom: 4rem;
+  }
+
+  .hero-content {
+    max-width: 760px;
+    margin-bottom: 3.5rem;
+  }
+
+  .hero-pill {
+    padding: 4px 14px;
+    font-size: 0.85rem;
+    margin-bottom: 1.8rem;
+    max-width: 100%;
+  }
+
+  .hero-pill-dot {
+    width: 6px;
+    height: 6px;
+  }
+
+  .hero-title {
+    font-size: clamp(1.85rem, 5vw, 3.25rem);
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-subtitle {
+    font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+    line-height: 1.7;
+    margin-bottom: 2.2rem;
+    max-width: 680px;
+  }
+
+  .btn-primary {
+    font-size: 1rem;
+    padding: 13px 28px;
+    border-radius: 14px;
+  }
+
+  .mockup-topbar {
+    padding: 10px 16px;
+    gap: 12px;
+  }
+
+  .mockup-topbar-left {
+    gap: 10px;
+  }
+
+  .mockup-dots {
+    gap: 7px;
+  }
+
+  .mockup-dot {
+    width: 9px;
+    height: 9px;
+  }
+
+  .mockup-title {
+    font-size: 0.85rem;
+  }
+
+  .mockup-tab-group {
+    gap: 6px;
+  }
+
+  .mockup-tab-btn {
+    font-size: 0.82rem;
+    padding: 4px 10px;
+    background: transparent;
+    border-color: transparent;
+  }
+
+  .mockup-tab-btn:hover {
+    background-color: var(--bg-card-hover);
+  }
+
+  .mockup-tab-btn.active {
+    border-color: var(--border-subtle);
+    background-color: var(--bg-card);
+    font-weight: 700;
+  }
+
+  .mockup-image-container {
+    height: 520px;
+  }
+
+  .mockup-image {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .mockup-image.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .mockup-caption {
+    padding: 10px 16px;
+    font-size: 0.88rem;
+    gap: 10px;
+    min-height: 44px;
+  }
+
+  @media (max-width: 992px) {
+    .mockup-image-container {
+      height: 440px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .hero-section {
+      padding-top: 3.5rem;
+      padding-bottom: 2.5rem;
+    }
+
+    .mockup-topbar {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 12px;
+    }
+
+    .mockup-topbar-left {
+      width: 100%;
+    }
+
+    .mockup-tab-group {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding-bottom: 2px;
+    }
+
+    .mockup-tab-group::-webkit-scrollbar {
+      display: none;
+    }
+
+    .mockup-image-container {
+      height: 360px;
+    }
+
+    .mockup-caption {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+      padding: 10px 12px;
+    }
+  }
+
+  @media (max-width: 540px) {
+    .hero-pill {
+      font-size: 0.75rem;
+      padding: 3px 10px;
+      margin-bottom: 1.4rem;
+    }
+
+    .hero-title {
+      font-size: clamp(1.5rem, 6.5vw, 2.1rem);
+      margin-bottom: 1rem;
+    }
+
+    .hero-subtitle {
+      font-size: 0.95rem;
+      margin-bottom: 1.8rem;
+      line-height: 1.6;
+    }
+
+    .btn-primary {
+      width: 100%;
+      max-width: 320px;
+      padding: 12px 20px;
+      font-size: 0.95rem;
+    }
+
+    .mockup-image-container {
+      height: 250px;
+    }
+  }
+
+  @media (max-width: 360px) {
+    .mockup-image-container {
+      height: 200px;
+    }
+  }
+</style>
+
+<script is:inline>
+  (function() {
+    const tabBtns = document.querySelectorAll('.mockup-tab-btn');
+    const images = document.querySelectorAll('.mockup-image');
+    const captionEl = document.getElementById('mockup-caption-text');
+
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const tabId = btn.getAttribute('data-tab-id');
+        const caption = btn.getAttribute('data-caption');
+
+        tabBtns.forEach(b => {
+          const isActive = b === btn;
+          b.classList.toggle('active', isActive);
+          b.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        });
+
+        images.forEach(img => {
+          const matches = img.getAttribute('data-view-id') === tabId;
+          img.classList.toggle('active', matches);
+        });
+
+        if (captionEl && caption) {
+          captionEl.textContent = caption;
+        }
+      });
+    });
+  })();
+</script>

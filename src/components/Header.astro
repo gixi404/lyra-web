@@ -1,0 +1,215 @@
+---
+import logo from "../assets/logo.png";
+---
+
+<header class="site-header sticky top-0 z-50 w-full border-b border-[var(--border-subtle)] bg-[var(--bg-primary)] transition-colors">
+  <div class="container flex h-16 items-center justify-between">
+    <a
+      href="/"
+      class="brand-wrapper inline-flex shrink-0 items-center gap-2.5 text-xl font-bold tracking-tight text-[var(--text-primary)] hover:opacity-85 transition-opacity"
+      aria-label="Lyra - Inicio"
+    >
+      <span>Lyra</span>
+      <img
+        src={logo.src}
+        alt="Isotipo Lyra"
+        class="brand-logo-img object-contain"
+        width={22}
+        height={22}
+        loading="eager"
+        decoding="async"
+      />
+    </a>
+
+    <nav class="header-nav flex items-center gap-5 sm:gap-[1.4rem]" aria-label="Navegación principal">
+      <a
+        href="/#filosofia"
+        class="nav-link whitespace-nowrap px-1 py-1.5 text-[0.92rem] font-medium text-[var(--text-primary)] hover:text-[var(--accent)] transition-colors"
+      >
+        Filosofía
+      </a>
+      <a
+        href="/#descargas"
+        class="nav-link whitespace-nowrap px-1 py-1.5 text-[0.92rem] font-medium text-[var(--text-primary)] hover:text-[var(--accent)] transition-colors"
+      >
+        Descargas
+      </a>
+      <a
+        href="https://github.com/gixi404/lyra"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="nav-link whitespace-nowrap px-1 py-1.5 text-[0.92rem] font-medium text-[var(--text-primary)] hover:text-[var(--accent)] transition-colors"
+        aria-label="Repositorio de Lyra en GitHub"
+      >
+        GitHub
+      </a>
+
+      <button
+        type="button"
+        id="theme-toggle-btn"
+        class="theme-toggle-btn inline-flex shrink-0 items-center justify-center rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-secondary)] text-[var(--text-primary)] transition-all hover:border-[var(--accent)] hover:text-[var(--accent)] active:scale-95"
+        title="Cambiar tema"
+        aria-label="Alternar modo claro y oscuro"
+      >
+        {/* Sol (visible en modo oscuro) */}
+        <svg
+          class="sun-icon"
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.75"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <circle cx="12" cy="12" r="4"></circle>
+          <path d="M12 2v2"></path>
+          <path d="M12 20v2"></path>
+          <path d="m4.93 4.93 1.41 1.41"></path>
+          <path d="m17.66 17.66 1.41 1.41"></path>
+          <path d="M2 12h2"></path>
+          <path d="M20 12h2"></path>
+          <path d="m6.34 17.66-1.41 1.41"></path>
+          <path d="m19.07 4.93-1.41 1.41"></path>
+        </svg>
+
+        {/* Luna (visible en modo claro) */}
+        <svg
+          class="moon-icon"
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.75"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+        </svg>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<style>
+  /* Control declarativo de iconos de tema según data-theme */
+  :global([data-theme="dark"]) .sun-icon {
+    display: block;
+  }
+  :global([data-theme="dark"]) .moon-icon {
+    display: none;
+  }
+  :global([data-theme="light"]) .sun-icon {
+    display: none;
+  }
+  :global([data-theme="light"]) .moon-icon {
+    display: block;
+  }
+
+  .theme-toggle-btn {
+    width: 36px;
+    height: 36px;
+  }
+
+  .brand-logo-img {
+    width: 22px;
+    height: 22px;
+  }
+
+  /* Breakpoint 540px */
+  @media (max-width: 540px) {
+    .site-header .container {
+      height: 56px;
+      padding-left: 0.85rem;
+      padding-right: 0.85rem;
+    }
+
+    .header-nav {
+      gap: 0.65rem;
+    }
+
+    .nav-link {
+      font-size: 0.82rem;
+      padding: 4px 2px;
+    }
+
+    .brand-wrapper {
+      font-size: 1.15rem;
+      gap: 6px;
+    }
+
+    .brand-logo-img {
+      width: 19px;
+      height: 19px;
+    }
+
+    .theme-toggle-btn {
+      width: 32px;
+      height: 32px;
+    }
+  }
+
+  /* Breakpoint 360px */
+  @media (max-width: 360px) {
+    .site-header .container {
+      padding-left: 0.6rem;
+      padding-right: 0.6rem;
+    }
+
+    .header-nav {
+      gap: 0.4rem;
+    }
+
+    .nav-link {
+      font-size: 0.75rem;
+      padding: 2px 1px;
+    }
+
+    .brand-wrapper {
+      font-size: 1.05rem;
+      gap: 5px;
+    }
+
+    .brand-wrapper span {
+      font-size: 1rem;
+    }
+
+    .brand-logo-img {
+      width: 17px;
+      height: 17px;
+    }
+
+    .theme-toggle-btn {
+      width: 28px;
+      height: 28px;
+    }
+  }
+</style>
+
+<script is:inline>
+  (function() {
+    const btn = document.getElementById('theme-toggle-btn');
+    if (!btn) return;
+
+    function updateBtnMeta(currentTheme) {
+      const isDark = currentTheme === 'dark';
+      btn.setAttribute('title', isDark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro');
+      btn.setAttribute('aria-label', isDark ? 'Activar modo claro' : 'Activar modo oscuro');
+    }
+
+    const initialTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+    updateBtnMeta(initialTheme);
+
+    btn.addEventListener('click', function() {
+      const current = document.documentElement.getAttribute('data-theme') || 'dark';
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('lyra-theme', next);
+      updateBtnMeta(next);
+    });
+  })();
+</script>
